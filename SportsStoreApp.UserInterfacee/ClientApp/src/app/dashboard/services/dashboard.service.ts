@@ -6,10 +6,9 @@ import { ConfigService } from '../../shared/utils/config.service';
 
 import {BaseService} from '../../shared/services/base.service';
 
-import { Observable } from 'rxjs/Rx'; 
+import { Observable } from 'rxjs'; 
+import { map } from 'rxjs/operator/map';
 
-// Add the RxJS Observable operators we need in this app.
-import '../../rxjs-operators';
 
 @Injectable()
 
@@ -28,8 +27,6 @@ export class DashboardService extends BaseService {
       let authToken = localStorage.getItem('auth_token');
       headers.append('Authorization', `Bearer ${authToken}`);
   
-    return this.http.get(this.baseUrl + "/dashboard/home",{headers})
-      .map(response => response.json())
-      .catch(this.handleError);
+    return this.http.get(this.baseUrl + "/dashboard/home",{headers}).catch(this.handleError);
   }  
 }

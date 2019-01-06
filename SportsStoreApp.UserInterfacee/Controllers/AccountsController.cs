@@ -8,7 +8,7 @@ using SportsStoreApp.UserInterface.ViewModels;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
- 
+using System;
 
 namespace SportsStoreApp.UserInterface.Controllers
 {
@@ -36,10 +36,17 @@ namespace SportsStoreApp.UserInterface.Controllers
             }
 
             var userIdentity = _mapper.Map<AppUser>(model);
+            try {
 
-            var result = await _userManager.CreateAsync(userIdentity, model.Password);
+                var result = await _userManager.CreateAsync(userIdentity, model.Password);
+                if (!result.Succeeded) return new BadRequestObjectResult(Errors.AddErrorsToModelState(result, ModelState));
+            }
+            catch(Exception ex)
+            {
+                var x = ex.Message;
+            }
+            
 
-            if (!result.Succeeded) return new BadRequestObjectResult(Errors.AddErrorsToModelState(result, ModelState));
 
             await _appDbContext.Customers.AddAsync(new Customer { IdentityId = userIdentity.Id, Location = model.Location });
             await _appDbContext.SaveChangesAsync();

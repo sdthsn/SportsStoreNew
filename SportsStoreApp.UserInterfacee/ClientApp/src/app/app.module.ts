@@ -10,8 +10,6 @@ import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { HeaderComponent } from './header/header.component';
-import { AccountModule } from './account/account.module';
-import { DashboardModule } from './dashboard/dashboard.module';
 import { ConfigService } from './shared/utils/config.service';
 import { XHRBackend } from '@angular/http';
 import { AuthenticateXHRBackend } from './authenticate-xhr.backend';
@@ -28,14 +26,15 @@ import { AuthenticateXHRBackend } from './authenticate-xhr.backend';
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
-    FormsModule,
+    FormsModule, 
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
+      { path: 'dashboard', loadChildren:'./dashboard/dashboard.module#DashboardModule' },
+      { path: 'account', loadChildren:'./account/account.module#AccountModule' },
     ]),
-    AccountModule,
-    DashboardModule
+
   ],
   providers: [ConfigService, {
     provide: XHRBackend,
